@@ -60,8 +60,15 @@ PAYMENT_TOKEN_ADDRESS = os.getenv("DEFAULT_SETTLEMENT_TOKEN", "0x3e17730bb2ca51a
 PAYMENT_TOKEN_DECIMALS = 18  # TRAIA has 18 decimals
 PAYMENT_NETWORK = os.getenv("DEFAULT_SETTLEMENT_NETWORK", "sepolia")
 
-# Price: 0.0001 TRAIA = 100000000000000 wei (10^14)
-PRICE_AMOUNT = "100000000000000"
+# Pricing per endpoint (TRAIA with 18 decimals)
+# 0.00001 TRAIA = 10000000000000 wei (10^13)
+# 0.00002 TRAIA = 20000000000000 wei (2 * 10^13)
+# 0.00003 TRAIA = 30000000000000 wei (3 * 10^13)
+# 0.00005 TRAIA = 50000000000000 wei (5 * 10^13)
+PRICE_1 = "10000000000000"   # 0.00001 TRAIA - basic endpoints
+PRICE_2 = "20000000000000"   # 0.00002 TRAIA - moderate data
+PRICE_3 = "30000000000000"   # 0.00003 TRAIA - complex data
+PRICE_5 = "50000000000000"   # 0.00005 TRAIA - bulk data
 
 logger.info("="*80)
 logger.info(f"CCXT Public API MCP Server (FastMCP + D402)")
@@ -107,7 +114,7 @@ async def get_exchange_async(exchange_id: str) -> ccxt_async.Exchange:
 @mcp.tool()
 @require_payment_for_tool(
     price=TokenAmount(
-        amount=PRICE_AMOUNT,
+        amount=PRICE_1,  # 0.00001 TRAIA
         asset=TokenAsset(
             address=PAYMENT_TOKEN_ADDRESS,
             decimals=PAYMENT_TOKEN_DECIMALS,
@@ -136,7 +143,7 @@ async def list_exchanges(context: Context) -> Dict[str, Any]:
 @mcp.tool()
 @require_payment_for_tool(
     price=TokenAmount(
-        amount=PRICE_AMOUNT,
+        amount=PRICE_1,  # 0.00001 TRAIA
         asset=TokenAsset(
             address=PAYMENT_TOKEN_ADDRESS,
             decimals=PAYMENT_TOKEN_DECIMALS,
@@ -183,7 +190,7 @@ async def fetch_markets(
 @mcp.tool()
 @require_payment_for_tool(
     price=TokenAmount(
-        amount=PRICE_AMOUNT,
+        amount=PRICE_1,  # 0.00001 TRAIA
         asset=TokenAsset(
             address=PAYMENT_TOKEN_ADDRESS,
             decimals=PAYMENT_TOKEN_DECIMALS,
@@ -238,7 +245,7 @@ async def fetch_ticker(
 @mcp.tool()
 @require_payment_for_tool(
     price=TokenAmount(
-        amount=PRICE_AMOUNT,
+        amount=PRICE_5,  # 0.00005 TRAIA - bulk data
         asset=TokenAsset(
             address=PAYMENT_TOKEN_ADDRESS,
             decimals=PAYMENT_TOKEN_DECIMALS,
@@ -295,7 +302,7 @@ async def fetch_tickers(
 @mcp.tool()
 @require_payment_for_tool(
     price=TokenAmount(
-        amount=PRICE_AMOUNT,
+        amount=PRICE_1,  # 0.00001 TRAIA
         asset=TokenAsset(
             address=PAYMENT_TOKEN_ADDRESS,
             decimals=PAYMENT_TOKEN_DECIMALS,
@@ -341,7 +348,7 @@ async def fetch_order_book(
 @mcp.tool()
 @require_payment_for_tool(
     price=TokenAmount(
-        amount=PRICE_AMOUNT,
+        amount=PRICE_2,  # 0.00002 TRAIA - moderate data
         asset=TokenAsset(
             address=PAYMENT_TOKEN_ADDRESS,
             decimals=PAYMENT_TOKEN_DECIMALS,
@@ -402,7 +409,7 @@ async def fetch_ohlcv(
 @mcp.tool()
 @require_payment_for_tool(
     price=TokenAmount(
-        amount=PRICE_AMOUNT,
+        amount=PRICE_1,  # 0.00001 TRAIA
         asset=TokenAsset(
             address=PAYMENT_TOKEN_ADDRESS,
             decimals=PAYMENT_TOKEN_DECIMALS,
@@ -459,7 +466,7 @@ async def fetch_trades(
 @mcp.tool()
 @require_payment_for_tool(
     price=TokenAmount(
-        amount=PRICE_AMOUNT,
+        amount=PRICE_1,  # 0.00001 TRAIA
         asset=TokenAsset(
             address=PAYMENT_TOKEN_ADDRESS,
             decimals=PAYMENT_TOKEN_DECIMALS,
@@ -508,7 +515,7 @@ async def fetch_currencies(
 @mcp.tool()
 @require_payment_for_tool(
     price=TokenAmount(
-        amount=PRICE_AMOUNT,
+        amount=PRICE_1,  # 0.00001 TRAIA
         asset=TokenAsset(
             address=PAYMENT_TOKEN_ADDRESS,
             decimals=PAYMENT_TOKEN_DECIMALS,
@@ -556,7 +563,7 @@ async def fetch_status(
 @mcp.tool()
 @require_payment_for_tool(
     price=TokenAmount(
-        amount=PRICE_AMOUNT,
+        amount=PRICE_1,  # 0.00001 TRAIA
         asset=TokenAsset(
             address=PAYMENT_TOKEN_ADDRESS,
             decimals=PAYMENT_TOKEN_DECIMALS,
@@ -601,7 +608,7 @@ async def fetch_time(
 @mcp.tool()
 @require_payment_for_tool(
     price=TokenAmount(
-        amount=PRICE_AMOUNT,
+        amount=PRICE_2,  # 0.00002 TRAIA - moderate data
         asset=TokenAsset(
             address=PAYMENT_TOKEN_ADDRESS,
             decimals=PAYMENT_TOKEN_DECIMALS,
@@ -670,7 +677,7 @@ async def fetch_bids_asks(
 @mcp.tool()
 @require_payment_for_tool(
     price=TokenAmount(
-        amount=PRICE_AMOUNT,
+        amount=PRICE_1,  # 0.00001 TRAIA
         asset=TokenAsset(
             address=PAYMENT_TOKEN_ADDRESS,
             decimals=PAYMENT_TOKEN_DECIMALS,
@@ -722,7 +729,7 @@ async def fetch_funding_rate(
 @mcp.tool()
 @require_payment_for_tool(
     price=TokenAmount(
-        amount=PRICE_AMOUNT,
+        amount=PRICE_3,  # 0.00003 TRAIA - complex data
         asset=TokenAsset(
             address=PAYMENT_TOKEN_ADDRESS,
             decimals=PAYMENT_TOKEN_DECIMALS,
@@ -778,7 +785,7 @@ async def fetch_funding_rates(
 @mcp.tool()
 @require_payment_for_tool(
     price=TokenAmount(
-        amount=PRICE_AMOUNT,
+        amount=PRICE_2,  # 0.00002 TRAIA - moderate data
         asset=TokenAsset(
             address=PAYMENT_TOKEN_ADDRESS,
             decimals=PAYMENT_TOKEN_DECIMALS,
